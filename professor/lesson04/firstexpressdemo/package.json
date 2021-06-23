@@ -1,0 +1,14 @@
+{
+    "name": "firstexpressdemo",
+    "version": "1.0.0",
+    "description": "",
+    "main": "app.js",
+    "scripts": {
+        "start": "set PORT=9999 && set NODE_ENV=development && nodemon app.js"
+    },
+    "author": "Rujuan Xing",
+    "license": "ISC",
+    "dependencies": {
+        "express": "^4.17.1"
+    }
+}
