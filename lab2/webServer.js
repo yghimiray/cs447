@@ -29,9 +29,14 @@ const path = require('path');
 
 // 4. Web (http) Server
 const http = require('http');
-const server = http.createServer();
-server.on('request',(req, resp)=> {
+// const server = http.createServer();
+// server.on('request',(req, resp)=> {
+//     const readable = fs.createReadStream(path.join(__dirname,'RedDahlia.jpg'),{highWaterMark : 20*1024});
+//     readable.pipe(resp);
+// });
+// server.listen(8000);
+
+http.createServer((req,res)=>{
     const readable = fs.createReadStream(path.join(__dirname,'RedDahlia.jpg'),{highWaterMark : 20*1024});
-    readable.pipe(resp);
-});
-server.listen(8000);
+    readable.pipe(res);
+}).listen(8000);
