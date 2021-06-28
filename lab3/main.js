@@ -10,23 +10,33 @@ const fs = require('fs');
 const path = require('path');
 const http = require('http');
 
-http.createServer((req,res)=>{
-    let readable;
-    if(req.url === "/"){
-        readable= fs.createReadStream('index.html').pipe(res);
-    }else if(req.url==="/textMessage" && req.method==="POST"){
-        const body =[];
-        req.on('data',(chunk)=>{
+http.createServer((req, res) => {
+
+    if (req.url === "/") {
+        fs.createReadStream('index.html').pipe(res);
+
+    } else if (req.url === "/textMessage" && req.method === "POST") {
+        const body = [];
+        req.on('data', (chunk) => {
             body.push(chunk);
         });
-        req.on('end',()=>{
+        req.on('end', () => {
             const postData = Buffer.concat(body).toString();
-            fs.writeFileSync("destination.txt",postData,(err,data)=>{
-                if(err) throw err
-                res.end(`printed ${postData}`);
-                
-            });
-          });
+            // fs.writeFileSync("destination.txt",postData,(err,data)=>{
+            //     if(err) throw err
+            //     res.end(`printed ${postData}`);
+
+            // });
+
+            const writable = fs.createWriteStream("destination.txt", { flags: 'a' });
+            writable.write(postData + "\n");
+            res.end("Saved Successfully!");
+        });
+        res.statusCode = 302;
+        res.setHeader("Location", "/");
+
+    } else {
+        res.end("Try Again!");
     }
 
 }).listen(3000);
