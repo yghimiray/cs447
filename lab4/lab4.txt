@@ -1,0 +1,43 @@
+Lab 4
+Create a npm project and install Express.js (Nodemon if you want)
+Change your Express.js app which serves HTML files (of your choice with your content) for “/”, “/users” 
+and “/products”.For “/users” and “/products”, provides GET and POST requests handling 
+(of your choice with your content) in different routers. Add some static (.js or .css) 
+files to your project that should be required by at least one of your HTML files.Customize your 404 page
+Provide your own error handling
+
+
+
+
+// Create a new package.json file
+
+// 1. Dependencies: Install Express
+// npm init -y // all answers to be yes.
+// npm install express
+
+// 2. Instantiations: Instantiate Express. Create a file named app.js, then add the content below:
+
+const express = require('express');
+const app = express();
+// app.listen(3000, () => {
+// console.log('Your Server is running on 3000');
+// });
+
+//3. Configurations
+//There are two ways to configure our application:
+// First: set
+app.set('port', process.env.PORT || 3000);
+const port = app.get('port');
+
+// Second: enable/disable
+// app.enable('etag') === app.set('etag', true)
+// app.disable('etag') === app.set('etag', false)
+
+// Configurations – 'env'
+// app.set('env', 'development');
+// console.log(app.get('env’));
+// The better way is to start an app with package.json
+// "scripts": {
+// "start": "set PORT=9999 && set NODE_ENV=development && nodemon app.js"
+// }
+// Run with command: npm start

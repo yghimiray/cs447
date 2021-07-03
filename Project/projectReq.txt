@@ -1,0 +1,34 @@
+Online Book Store
+This project extends the features on the bookstore labs we had.
+You can use in memory database or use MongoDB to do this project which is your group’s choices.
+You can start build the project based on the Lab6 or Lab 7 solutions or use your own lab solution code.
+The project grade is based on the features you presented. You’re only allowed to use 1 laptop to present,
+cannot switch laptops/computers to show different features in different laptops/computers.
+The project is graded using the grading sheet below:
+Features Points
+Admin 1. CRUD operations on products 1
+Member/User 2. Signup – username must be unique 1
+3. Update Personal Information: firstname,
+lastname, password, except username
+1
+4. Only able to view books. Cannot
+update/delete/add books
+1
+5. Add to Cart, remove from Cart, get shopping
+cart list – only after logs in.
+3
+6. Add payment page 1
+7. Place an order only after login. All shopping
+cart should be cleared after order placed
+successfully
+3
+8. Users can see order history, if the product
+price is changed, it shouldn’t change the
+product price in the order history.
+2
+General Login, Logout 1
+Fork the project repository, create pull request,
+should be view the regular checks in about the
+project from each member.
+1
+Total 15
