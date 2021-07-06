@@ -12,7 +12,7 @@ exports.searchById = (req,res,next)=>{
 exports.save = (req,res,next)=>{
     const book = req.body;
     const savedBook = new Book(null,book.title,book.ISBN,book.publishedDate,book.author).save();
-    res.status(200).json(savedBook);
+    res.status(201).json(savedBook);
 };
 
 exports.update = (req,res,next)=>{
@@ -24,5 +24,6 @@ exports.update = (req,res,next)=>{
 
 exports.deleteById = (req,res,next)=>{
     const id = req.params.bookId;
-    res.status(200).json(Book.deleteById(id));
+    Book.deleteById(id);
+    res.status(200).end();
 };

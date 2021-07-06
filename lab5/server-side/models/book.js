@@ -10,13 +10,13 @@ class Book {
     }
 
     save() {
-        this.id = Math.random().toString;
+        this.id = Math.floor(Math.random()*100).toString();
         books.push(this);
         return this;
     }
 
-    static searchById(id) {
-        const index = books.findIndex(book => book.id === id);
+    static searchById(bookId) {
+        const index = books.findIndex(book => book.id === bookId);
         if (index > -1) {
             return books[index];
         } else {
@@ -24,17 +24,17 @@ class Book {
         }
     }
 
-    static deleteById(id) {
-        const index = books.findIndex(book => book.id === id);
+    static deleteById(bookId) {
+        const index = books.findIndex(book => book.id === bookId);
         if (index > -1) {
-            books = books.filter(book => book.id !== id);
+            books = books.filter(book => book.id !== bookId);
         } else {
             throw new Error("Book not found to delete.")
         }
     }
 
     update() {
-        const index = books.findIndex(book => book.id === id);
+        const index = books.findIndex(book => book.id === this.id);
         if(index > -1) {
             books.splice(index,1,this);
             return this;
