@@ -14,7 +14,7 @@ app.use(express.urlencoded({extended:true}));
 // app.use(express.json());
 
 
-app.use(express.static(path.join(__dirname,'public','css')));//mycss is used for not showing the acual path to the client.
+app.use('/mycss',express.static(path.join(__dirname,'public','css')));//mycss is used for not showing the acual path to the client.
 
 app.use('/product',productRouter);
 app.use('/user',userRouter);

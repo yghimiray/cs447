@@ -26,7 +26,21 @@
       </nav>
 
       <div class="container">
-          <h1>Add a Product</h1>
+        <h1>Product List</h1>
+        <table class="table">
+          <thead>
+            <tr>             
+              <th scope="col">Title</th>
+              <th scope="col">Price</th>
+              <th scope="col">Description</th>
+              <th scope="col">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="product-list-body"> 
+          </tbody>
+        </table>
+
+          <h1 id="form-title">Add a Product</h1>
       <form id="add-form">
         <div class="mb-3">
           <label for="title" class="form-label">Title</label>

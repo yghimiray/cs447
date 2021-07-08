@@ -5,3 +5,4 @@
 3. [Lab 3](./lab3)
 4. [Lab 4](./lab4)
 5. [Lab 5](./lab5)
+6. [Lab 6](./lab6)
