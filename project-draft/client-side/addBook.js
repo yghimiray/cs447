@@ -1,3 +1,6 @@
+// let admin = true;
+let admin = false;
+
 
 window.onload = function () {
 
@@ -27,7 +30,7 @@ window.onload = function () {
 
     document.getElementById("inventory").onclick = function (event) {
         event.preventDefault();
-        fetchCRUDBooks();
+        fetchBooks();
         displayList();
     }
 
@@ -54,12 +57,16 @@ window.onload = function () {
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
-async function fetchCRUDBooks() {
+async function fetchBooks() {
     const tbody = document.getElementById("book-list-body");
     const books = await fetch('http://localhost:5500/books')
         .then(response => response.json())
     books.forEach(book => {
-        attachbooks(tbody, book);
+        if(admin){
+            attachbooks(tbody,book)
+        }else{
+            attachSalebooks(tbody, book);
+        }
     })
 }
 
@@ -137,16 +144,17 @@ function attachSalebooks(tbody, book) {
             });
         document.getElementById("moreBook-btn").onclick = async function (event) {
             event.preventDefault();
-            displayNewPurchase();
+            // displayNewPurchase();
             const bookId = document.getElementById('moreBook-code').value;
-            const updatedQty = Number(document.getElementById("moreQty").value);
+            const orderedQty = Number(document.getElementById("moreQty").value);
             await fetch('http://localhost:5500/books/' + bookId)
                 .then(response => response.json())
                 .then(data => {
+
                     document.getElementById('form-heading').textContent = `Adding ${updatedQty} quantity of ${data.title} to your cart`;
                     document.getElementById("code").value = data.id;
                     document.getElementById("title").value = data.title;
-                    document.getElementById("qty").value = Number(data.qty)-updatedQty;
+                    document.getElementById("qty").value = Number(data.qty)-orderedQty;
                     document.getElementById("pub-date").value = data.publishedDate;
                     document.getElementById("unitprice").value = data.price
                     document.getElementById('submit-btn').dataset.id = data.id;

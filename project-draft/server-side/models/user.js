@@ -1,10 +1,10 @@
 let users = [];
-
+let ShoppingCart = require('./shoppingCart');
+const OrderHistory = require('./orderHistory');
 
 class User {
-    constructor(fname, lname, username, password, role) {
-        this.fname = fname;
-        this.lname = lname;
+    constructor(name,username, password, role) {
+        this.name = name;
         this.username = username;
         this.password = password;
         this.role = role;
@@ -43,13 +43,63 @@ class User {
         }
     }
 
+    addShoppingCart(){
+        const shoppingCart = new ShoppingCart(this.username,[]).addCarts();
+        return shoppingCart;
+    }
 
+    searchShoppingCart(){
+        const cart = new ShoppingCart(this.username,[]).searchCart(this.username);
+        return cart;
+    }
+
+    emptyShoppingCart(){
+        const cart = new ShoppingCart(this.username,[]).emptyCart(this.username);
+        return cart;
+    }
+
+
+    addOrderHistory(){
+        const orderHistory = new OrderHistory(this.username,[]).addOrders();
+        return orderHistory;
+    }
+
+
+    searchOrders(){
+        const orderHistory = new OrderHistory(this.username,[]).searchOrder(this.username);
+        return orderHistory;
+    }
 }
 
 
 
-users.push(new User("john",'Smith','john', 'admin123', 'admin'));
-users.push(new User("Edward",'Jack', 'edward', 'Edward567', 'member'));
+users.push(new User("john Smith",'john', 'admin123', 'admin'));
+// users.push(new User("Edward Jack", 'edward', 'Edward567', 'member'));
+
+
+const user = new User("john Smith",'Ashenafi', 'admin123', 'admin');
+const user1 = new User("john Smith",'Yogesh', 'admin123', 'admin');
+
+user.addShoppingCart();
+user1.addShoppingCart();
+user.addShoppingCart();
+user.addShoppingCart();
+user1.addShoppingCart();
+
+
+user1.searchShoppingCart().forEach(elem=>{
+    console.log(elem.username)
+});
+
+user1.emptyShoppingCart()
+
+user.searchShoppingCart().forEach(elem=>{
+    console.log(elem.username)
+});
+
+
+
+
 
 
 module.exports = User;
