@@ -1,20 +1,20 @@
-let orderHistory = [];
+let orderHistories = [];
 
 class OrderHistory{
-    constructor(username,arr){
+    constructor(username,obj){
         this.username= username;
-        this.arr= arr;
+        this.obj= obj;
     }
 
     addOrders(){
-            orderHistory.push(this)
+        orderHistories.push(this)
             return this;
     }
 
     searchOrder(username) {
-        const index = orderHistory.findIndex(o => o.username === username);
+        const index = orderHistories.findIndex(o => o.username === username);
         if (index > -1) {
-            const myOrderHistory = orderHistory.filter(o=> o.username===username);
+            const myOrderHistory = orderHistories.filter(o=> o.username===username);
             return myOrderHistory;
         } else {
             throw new Error("No search found.")

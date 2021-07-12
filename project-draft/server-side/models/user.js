@@ -34,8 +34,8 @@ class User {
         }
     }
 
-    static search(username) {
-        const index = users.findIndex(u => u.username === username);
+    static searchUser(uname) {
+        const index = users.findIndex(u => u.username === uname);
         if (index > -1) {
             return users[index];
         } else {
@@ -44,29 +44,29 @@ class User {
     }
 
     addShoppingCart(){
-        const shoppingCart = new ShoppingCart(this.username,[]).addCarts();
+        const shoppingCart = new ShoppingCart(this.username,null).addCarts();
         return shoppingCart;
     }
 
     searchShoppingCart(){
-        const cart = new ShoppingCart(this.username,[]).searchCart(this.username);
+        const cart = new ShoppingCart(this.username,null).searchCart(this.username);
         return cart;
     }
 
     emptyShoppingCart(){
-        const cart = new ShoppingCart(this.username,[]).emptyCart(this.username);
+        const cart = new ShoppingCart(this.username,null).emptyCart(this.username);
         return cart;
     }
 
 
     addOrderHistory(){
-        const orderHistory = new OrderHistory(this.username,[]).addOrders();
+        const orderHistory = new OrderHistory(this.username,null).addOrders();
         return orderHistory;
     }
 
 
     searchOrders(){
-        const orderHistory = new OrderHistory(this.username,[]).searchOrder(this.username);
+        const orderHistory = new OrderHistory(this.username,null).searchOrder(this.username);
         return orderHistory;
     }
 }
@@ -74,32 +74,30 @@ class User {
 
 
 users.push(new User("john Smith",'john', 'admin123', 'admin'));
-// users.push(new User("Edward Jack", 'edward', 'Edward567', 'member'));
+users.push(new User("Edward Jack", 'edward', 'Edward567', 'member'));
 
 
-const user = new User("john Smith",'Ashenafi', 'admin123', 'admin');
-const user1 = new User("john Smith",'Yogesh', 'admin123', 'admin');
+// const user = new User("john Smith",'Ashenafi', 'admin123', 'admin');
+// const user1 = new User("john Smith",'Yogesh', 'admin123', 'admin');
+// user.addShoppingCart();
+// user1.addShoppingCart();
+// user.addShoppingCart();
+// user.addShoppingCart();
+// user1.addShoppingCart();
 
-user.addShoppingCart();
-user1.addShoppingCart();
-user.addShoppingCart();
-user.addShoppingCart();
-user1.addShoppingCart();
+// user1.searchShoppingCart().forEach(elem=>{
+//     console.log(elem.username)
+// });
 
+// user1.emptyShoppingCart()
 
-user1.searchShoppingCart().forEach(elem=>{
-    console.log(elem.username)
-});
-
-user1.emptyShoppingCart()
-
-user.searchShoppingCart().forEach(elem=>{
-    console.log(elem.username)
-});
-
+// user.searchShoppingCart().forEach(elem=>{
+//     console.log(elem.username)
+// });
 
 
 
 
+// console.log(User.searchUser("edward"));
 
 module.exports = User;

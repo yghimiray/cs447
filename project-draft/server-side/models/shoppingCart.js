@@ -1,20 +1,20 @@
-let shoppingCart = [];
+let shoppingCarts = [];
 
 class ShoppingCart{
-    constructor(username,arr){
+    constructor(username,obj){
         this.username= username;
-        this.arr= arr;
+        this.obj= obj;
     }
 
     addCarts(){
-            shoppingCart.push(this)
+            shoppingCarts.push(this)
             return this;
     }
 
     searchCart(username) {
-        const index = shoppingCart.findIndex(c => c.username === username);
+        const index = shoppingCarts.findIndex(c => c.username === username);
         if (index > -1) {
-            const myCart = shoppingCart.filter(c=> c.username===username);
+            const myCart = shoppingCarts.filter(c=> c.username===username);
             return myCart;
 
         } else {
@@ -24,9 +24,9 @@ class ShoppingCart{
 
 
     emptyCart(username) {
-        const index = shoppingCart.findIndex(c =>c.username === username);
+        const index = shoppingCarts.findIndex(c =>c.username === username);
         if (index > -1) {
-            shoppingCart = shoppingCart.filter(c => c.username !== username);
+            shoppingCart = shoppingCarts.filter(c => c.username !== username);
         } else {
             throw new Error("Cart not found to delete.")
         }

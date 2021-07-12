@@ -1,7 +1,7 @@
 
 const express = require('express');
 const bookRouter = require('./routes/book-router');
-// const userRouter = require('./routes/user-router');
+const userRouter = require('./routes/user-router');
 const cors = require('cors');
 
 const app = express();
@@ -13,7 +13,7 @@ const port = app.get('port');
 app.use(cors());
 app.use(express.json());
 
-// app.use(userRouter);
+app.use(userRouter);
 app.use('/books', bookRouter);
 
 app.listen(port,()=>console.log("Local Host is port.." + port));
