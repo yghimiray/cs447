@@ -5,7 +5,7 @@ function displayLoginPage(){
     document.getElementById('logoutBtn').style.display='none';
 }
 
-function welcome(){
+function displayWelcome(){
     const name = document.getElementById('username').value;
     const div = document.createElement('div');
     div.appendChild(name);
@@ -15,6 +15,7 @@ function displayList(){
     document.getElementById('booklist').style.display='block';
     document.getElementById('newBook').style.display='none';
     document.getElementById('logoutBtn').style.display='block';
+    fetchBooks();
 }
 
 function displayAddition(){
@@ -26,20 +27,42 @@ function displayAddition(){
 
 
 window.onload = function () {
-    if (sessionStorage.getItem('accessToken')) {
+    // if (sessionStorage.getItem('accessToken')) {
         displayList();
-    } else {
-        displayLoginPage();
+    // } else {
+    //     displayLoginPage();
+    // }
+    
+    document.getElementById('login-btn').onclick= async function(event){
+        event.preventDefault();
+        let result = await fetch('http://localhost:5500/login',{
+            method:'POST',
+            headers:{
+                'content-type':'application/json'
+            },
+            body:JSON.stringify({
+                username:document.getElementById('username').value,
+                password:document.getElementById('password').value
+            })
+        }).then(response=> response.json());
+        if(result.accessToken){
+            sessionStorage.setItem("accessToken",result.accessToken);
+            displayList();
+        // }else{
+        //     displayLoginPage();
+        }
     }
+
     
 
 
-    fetchBooks();
+    
 
     document.getElementById('add-a-Book').onclick=function(event){
         event.preventDefault();
         displayAddition();
     }
+
     document.getElementById("submit-btn").onclick = function(event){
         event.preventDefault();
         const bookId = this.dataset.id;
@@ -56,7 +79,12 @@ window.onload = function () {
 ////////////////////////////////////////////////////////////////////////////////////////////
 async function fetchBooks(){      
     const tbody = document.getElementById("book-list-body");
-    const books = await fetch('http://localhost:5500/books')
+    const books = await fetch('http://localhost:5500/books',{
+        method:"GET",
+        headers:{
+            'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+        }
+    })
     .then(response=>response.json())        
     books.forEach(book => {
         attachbooks(tbody,book);
@@ -68,7 +96,10 @@ async function fetchBooks(){
         const tbody = document.getElementById("book-list-body");
         await fetch('http://localhost:5500/books',{
             method:"POST",
-            headers:{"content-type":"application/json"},
+            headers:{
+                "content-type":"application/json",
+                'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+            },
             body:JSON.stringify({
                 title:document.getElementById("title").value,
                 ISBN:document.getElementById("isbn").value,
@@ -126,7 +157,10 @@ async function fetchBooks(){
 ///////////////// adding evenhandler to the edit and delete buttons
 deleteButton.addEventListener('click', function(){
     fetch('http://localhost:5500/books'+book.id,{
-        method:'DELETE'
+        method:'DELETE',
+        headers:{
+            'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+        }
     }).then(data=>{
         tr.remove();
     });
@@ -157,7 +191,10 @@ async function updateBook(bookId){
     const tbody = document.getElementById("book-list-body");
     await fetch('http://localhost:5500/books/'+bookId,{
         method:"PUT",
-        headers:{"content-type":"application/json"},
+        headers:{
+            "content-type":"application/json",
+            'Authorization': 'Bearer ' + sessionStorage.getItem('accessToken')
+            },
         body:JSON.stringify({
             title:document.getElementById("title").value,
             ISBN:document.getElementById("isbn").value,
@@ -173,3 +210,5 @@ async function updateBook(bookId){
         location.reload();
     })
 }
+
+

@@ -12,7 +12,7 @@ module.exports = class User {
     }
 
     static init() {
-        users.push(new User('john', 'admin', 'admin'));
-        users.push(new User('bella', 'member', 'member'));
+        users.push(new User('john', 'admin123', 'admin'));
+        users.push(new User('Edward', 'Edward567', 'member'));
     }
 }

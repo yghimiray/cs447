@@ -18,7 +18,7 @@ exports.authorize = (req,res,next)=>{
 
     if(authHeader){//if authheader exists, verify, else say unauthorized user.
         const token = authHeader.split(' ')[1];
-        jwt.verify(token.secretKey,(err,data)=>{
+        jwt.verify(token,secretKey,(err,data)=>{
             if(err){//if authheader exists but token is corrupted.
               return  res.status(403).json({'error':'Forbidden'});
             }else{//this data is an object made from token which has username and role as properties.

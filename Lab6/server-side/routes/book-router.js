@@ -1,13 +1,14 @@
 const express = require('express');
 const router = express.Router();
 
-const controller = require('../controllers/bookController');
+const bookController = require('../controllers/bookController');
+const userController = require('../controllers/userController');
 
-router.get('/',controller.fetchAll);
-router.get('/:bookId',controller.searchById);
-router.post('/',controller.save);
-router.put('/:bookId',controller.update);
-router.delete('/:bookId',controller.deleteById);
+router.get('/',bookController.fetchAll);
+router.get('/:bookId',bookController.searchById);
+router.post('/',userController.authorizeAdmin,bookController.save);
+router.put('/:bookId',userController.authorizeAdmin,bookController.update);
+router.delete('/:bookId',userController.authorizeAdmin,bookController.deleteById);
 
 
 module.exports = router;
