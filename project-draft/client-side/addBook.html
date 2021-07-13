@@ -46,9 +46,8 @@
         
         <div>
             <!-- <input type=button onClick="location.href='./index.html'" value='click here' > -->
-            <button class="btn btn-primary" type="submit" id="show-cart-btn" >Show Cart</button>
-            <button class="btn btn-primary" type="submit" id="show-order-btn">Show Order History</button>
-            <div id="booklist" class="container">
+            <p><button class="btn btn-primary" type="submit" id="show-cart-btn" >Show Cart</button><button class="btn btn-primary" type="submit" id="show-order-btn">Show Order History</button></p>
+                <div id="booklist" class="container">
                 <h1>Book List</h1>
                 <table class="table">
                     <thead>
@@ -62,7 +61,7 @@
                         </tr>
                     </thead>
                     <tbody id="book-list-body"></tbody>
-                </table>
+                </table>     
 
             </div>
             <button type="button" class="btn btn-primary" id="add-a-Book" style="position:relative; left:80px">Purchase
@@ -157,8 +156,7 @@
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="moreQty" class="form-label">Order Quantity:</label>
                     <input type="number" size="70" id="moreQty">
-                    <button type="submit" class="btn btn-primary" id="moreBook-btn"
-                        style="position:relative; left:50px">Purchase</button>
+                    <button type="submit" class="btn btn-primary" id="moreBook-btn" style="position:relative; left:50px">OK</button>
                 </div>
             </form>
         </div>
@@ -204,6 +202,33 @@
                 </div>
             </form>
         </div>
+
+
+
+
+        <div id="creat_new_account" class="container_c">
+            <h4 id="login-heading"> create new account</h4>
+            <div id="login-form">
+                <form id="creat_new_account-form">
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="c_name" class="form-label">Name</label>
+                    <input type="text" size="70" id="c_name">
+                </div>
+                
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" size="70" id="c_username">
+                </div>
+
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" size="70" id="c_password">
+                    <button type="submit" class="btn btn-primary" id="c_btn" style="position:relative; left:50px">Create account</button>
+                </div>
+            </form>
+            </div>
+        </div>
+
 
 
 

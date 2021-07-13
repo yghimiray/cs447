@@ -1,3 +1,4 @@
+"use strict";
 const User = require('../models/user');
 const ShoppingCart = require('../models/shoppingCart');
 const OrderHistory = require('../models/orderHistory');
@@ -5,15 +6,45 @@ const jwt = require('jsonwebtoken');
 const secretKey = "Team C bookstore";
 
 
-exports.login = (req,res,next)=>{
-    const user = new User(req.body.name,req.body.username,req.body.password,req.body.role).login();
-    if(user){
-        const accessToken= jwt.sign({username:user.username,role:user.role},secretKey);
-        res.json(accessToken);
-    }else{
-        res.status(200).json({'error':'Invalid username and password'});
+exports.login = (req, res, next) => {
+
+    const user = new User(null, req.body.username, req.body.password, null).login();
+    if (user) {
+        const accessToken = jwt.sign({ username: user.username, role: user.role }, secretKey);
+        res.json({
+            accessToken: accessToken
+        });
+    } else {
+        res.status(200).json({ 'error': 'Invalid username or password, please try again' });
     }
 };
+
+exports.authorize = (req, res, next) => {
+    console.log(req.headers.authorization)
+    const authHeader = req.headers.authorization;
+    if (authHeader) {
+        const token = authHeader.split(" ")[1];
+        jwt.verify(token, secretKey, (err, user) => {
+            if (err) {
+                return res.status(403).json({ "error": "Forbidden" });
+            }
+            console.log("1............");
+            req.user = user;
+            next();
+        });
+    } else {
+        res.status(401).json({ "error": "Unauthorized" });
+    }
+};
+
+exports.authorizeAdmin = (req, res, next) => {
+    if (req.user.role === "admin") {
+        next();
+    } else {
+        return res.status(403).json({ "error": "Forbidden" });
+    }
+};
+
 
 
 exports.createUser = (req,res,next)=>{
@@ -66,3 +97,5 @@ exports.searchOrders = (req,res,next)=>{
     const cart = new User(null,uname,null,null).searchOrders();
     res.status(200).json(cart);
 };
+
+

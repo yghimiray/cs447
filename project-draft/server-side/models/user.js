@@ -1,4 +1,4 @@
-let users = [];
+let users = [{name:"Admin-Guy",username:"admin", password:"12345", role:"admin"}];
 let ShoppingCart = require('./shoppingCart');
 const OrderHistory = require('./orderHistory');
 
@@ -12,6 +12,9 @@ class User {
 
     }
 
+    static init(){
+        users.push(new User("john",'admin',12345,'admin'));
+    }
   
 
     login() {
@@ -21,12 +24,14 @@ class User {
     createUser(){
         const index = users.findIndex(u => u.username === this.username);
         if(index > -1){
-            throw new Error ("User already exists")
+            throw new Error ({error:"User already exists"})
         }else{
             users.push(this);
             return this;
         }
     }
+
+    
 
     updateUser() {
         const index = users.findIndex(u => u.username === this.username);

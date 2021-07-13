@@ -8,23 +8,25 @@ window.onload = function () {
 
     document.getElementById('login-btn').onclick = async function (event) {
         event.preventDefault();
-        //     let result = await fetch('http://localhost:5500/login',{
-        //         method:'POST',
-        //         headers:{
-        //             'content-type':'application/json'
-        //         },
-        //         body:JSON.stringify({
-        //             username:document.getElementById('username').value,
-        //             password:document.getElementById('password').value
-        //         })
-        //     }).then(response=> response.json());
-        //     if(result.accessToken){
-        //         sessionStorage.setItem("accessToken",result.accessToken);
-        //         displayCRUDList();
-        //     // }else{
-        //     //     displayLoginPage();
-        //     }
-        // 
+        // let result = await fetch('http://localhost:5500/users/login', {
+        //     method: 'POST',
+        //     headers: {
+        //         'content-type': 'application/json'
+        //     },
+        //     body: JSON.stringify({
+        //         username: document.getElementById('username').value,
+        //         password: document.getElementById('password').value
+        //     })
+        // }).then(response => response.json());
+        // if (result.accessToken) {
+        //     sessionStorage.setItem("accessToken", result.accessToken);
+        //     sessionStorage.setItem('username', document.getElementById('username').value)
+        //     // alert("1......")
+        //     displayBookForm()
+        //     // displayCRUDList();
+        // } else {
+        //     displayLoginPage();
+        // }
 
         loggedUsername = document.getElementById('username').value,
             fetchBooks();
@@ -33,6 +35,34 @@ window.onload = function () {
         } else {
             displaySalesList();
         }
+    }
+
+
+    document.getElementById('c_btn').onclick = async function (event) {
+        event.preventDefault();
+        let result = await fetch('http://localhost:5500/users', {
+            method: 'POST',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify({
+                name: document.getElementById('c_name').value,
+                username: document.getElementById('c_username').value,
+                password: document.getElementById('c_password').value,
+                role: "user"
+            })
+        }).then(response => response.json())
+            .then(user => {
+                console.log(user);
+                alert("User Created Successfully. Please Login now.")
+                document.getElementById('creat_new_account-form').reset();
+            }).catch(err => {
+                alert("User already esists.")
+                document.getElementById('creat_new_account-form').reset();
+            })
+
+        displayLogin()
+
     }
 
 
@@ -81,7 +111,7 @@ async function fetchBooks() {
             attachbooks(tbody, book)
         } else {
             attachSalebooks(tbody, book);
-            
+
 
         }
     })
@@ -135,6 +165,7 @@ async function addShoppingCart(book) {
 
 async function showShoppingCart() {
     const tbody = document.getElementById("cart-list-body");
+    tbody.innerText = "";
     const shoppingCarts = await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
         method: "GET",
         headers: { "content-type": "application/json" },
@@ -165,7 +196,7 @@ async function showShoppingCart() {
 
     orderButton.addEventListener('click', function () {
         displayPaymentPage();
-        document.getElementById('payment-btn').onclick = function (event) {
+        document.getElementById('payment-btn').onclick = async function (event) {
             event.preventDefault();
             shoppingCarts.forEach(cart => {
                 const cartBook = cart.obj;
@@ -173,12 +204,13 @@ async function showShoppingCart() {
                 updateBookQty(cartBook, soldQty);
                 addOrderHistory(cartBook);
             })
+            await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
+                method: "DELETE",
+                headers: { "content-type": "application/json" },
+            }).then(response => response.json());
+
         }
     });
-    // await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
-    //     method: "DELETE",
-    //     headers: { "content-type": "application/json" },
-    // }).then(response => response.json());
 
 }
 
@@ -205,6 +237,7 @@ async function addOrderHistory(book) {
 
 async function showOrderHistory() {
     const tbody = document.getElementById("cart-list-body");
+    tbody.innerText = "";
     const orderHistories = await fetch('http://localhost:5500/orderHistories/' + loggedUsername, {
         method: "GET",
         headers: { "content-type": "application/json" },
@@ -272,7 +305,7 @@ function attachSalebooks(tbody, book) {
             });
         document.getElementById("moreBook-btn").onclick = async function (event) {
             event.preventDefault();
-            displayNewPurchase();
+            // displayNewPurchase();
             const bookId = document.getElementById('moreBook-code').value;
             const orderedQty = Number(document.getElementById("moreQty").value);
             await fetch('http://localhost:5500/books/' + bookId)
@@ -475,9 +508,6 @@ function attachOrderHistory(tbody, book) {
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 
-
-
-
 async function updateBook(bookId) {
     await fetch('http://localhost:5500/books/' + bookId, {
         method: "PUT",
@@ -497,6 +527,26 @@ async function updateBook(bookId) {
             document.getElementById('submit-btn').dataset.id = '';
             location.reload();
             displayCRUDList();
+        })
+}
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+async function updateUser(uname) {
+    await fetch('http://localhost:5500/users/' + uname, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+            name: document.getElementById('c_name').value,
+            username:uname,
+            password: document.getElementById('c_password').value,
+            role:"user"
+        })
+    }).then(response => response.json())
+        .then(user => {
+            console.log(user);
+            document.getElementById('creat_new_account-form').reset();
+            document.getElementById('c_btn').dataset.username = '';
+            location.reload();
         })
 }
 

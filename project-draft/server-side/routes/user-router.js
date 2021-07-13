@@ -3,7 +3,7 @@ const userRouter = express.Router();
 
 const userController = require('../controllers/userController');
 
-// userRouter.post('/users/login',userController.login);
+userRouter.post('/users/login',userController.login);
 userRouter.post('/users',userController.createUser);
 userRouter.put('/users/:username',userController.updateUser);// Not working in Postman
 userRouter.get('/users/:username',userController.searchUser);
