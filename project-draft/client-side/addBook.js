@@ -1,5 +1,5 @@
-let admin = true;
-// let admin = false;
+// let admin = true;
+let admin = false;
 let loggedUsername;
 
 window.onload = function () {
@@ -28,9 +28,9 @@ window.onload = function () {
 
         loggedUsername = document.getElementById('username').value,
             fetchBooks();
-        if(admin){
+        if (admin) {
             displayCRUDList();
-        }else{
+        } else {
             displaySalesList();
         }
     }
@@ -39,7 +39,14 @@ window.onload = function () {
 
     document.getElementById("show-cart-btn").onclick = function (event) {
         event.preventDefault();
+        displayCart();
         showShoppingCart();
+    }
+
+    document.getElementById("show-order-btn").onclick = function (event) {
+        event.preventDefault();
+        displayCart();
+        showOrderHistory();
     }
 
 
@@ -74,6 +81,8 @@ async function fetchBooks() {
             attachbooks(tbody, book)
         } else {
             attachSalebooks(tbody, book);
+            
+
         }
     })
 }
@@ -102,9 +111,11 @@ async function addBooks() {
 
 
 
+
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 async function addShoppingCart(book) {
-    await fetch('http://localhost:5500/shoppingCarts', {
+    const shoppingCarts = await fetch('http://localhost:5500/shoppingCarts', {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
@@ -112,29 +123,105 @@ async function addShoppingCart(book) {
             obj: book
         })
     }).then(response => response.json())
-        .then(book => {
-            alert("Selected item added to the cart successfully");
-        })
+    // alert(shoppingCarts)    
+    // .then(cart => {
+    // alert("Selected item added to the cart successfully");
+
+    // })
 }
 
 //////////////////////////////////////////////////////////////////////////////////////////////
 
+
 async function showShoppingCart() {
-    const shoppingCarts = await fetch('http://localhost:5500/shoppingCarts/'+ loggedUsername, {
+    const tbody = document.getElementById("cart-list-body");
+    const shoppingCarts = await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
         method: "GET",
         headers: { "content-type": "application/json" },
-        
+    }).then(response => response.json());
+    let sum = 0;
+    shoppingCarts.forEach(cart => {
+        const book = cart.obj;
+        attachShoppingCart(tbody, book);
     })
-    .then(response => response.json());
-    shoppingCarts.forEach(element=>{
-        console.log(element.username);
+    shoppingCarts.forEach(cart => {
+        const book = cart.obj;
+        const qty = Number(book.qty);
+        const price = Number(book.price);
+        const totalAmountPerBook = qty * price;
+        sum = sum + totalAmountPerBook;
     })
+
+    const div = document.createElement('div');
+    div.classList = 'row border-top';
+    div.innerHTML = "Grand total #  $" + sum.toString();
+    tbody.appendChild(div);
+
+    const actionData = document.createElement('td');
+    const orderButton = document.createElement('button');
+    orderButton.innerText = 'Order';
+    actionData.appendChild(orderButton);
+    tbody.appendChild(actionData);
+
+    orderButton.addEventListener('click', function () {
+        displayPaymentPage();
+        document.getElementById('payment-btn').onclick = function (event) {
+            event.preventDefault();
+            shoppingCarts.forEach(cart => {
+                const cartBook = cart.obj;
+                const soldQty = Number(cartBook.qty) * -1;
+                updateBookQty(cartBook, soldQty);
+                addOrderHistory(cartBook);
+            })
+        }
+    });
+    // await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
+    //     method: "DELETE",
+    //     headers: { "content-type": "application/json" },
+    // }).then(response => response.json());
+
 }
 
 
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+async function addOrderHistory(book) {
+    const shoppingCarts = await fetch('http://localhost:5500/orderHistories', {
+        method: "POST",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+            username: loggedUsername,
+            obj: book
+        })
+    }).then(response => response.json())
+    // alert(shoppingCarts)    
+    // .then(cart => {
+    //     alert("Selected item added to the Order History successfully");
+    // })
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+async function showOrderHistory() {
+    const tbody = document.getElementById("cart-list-body");
+    const orderHistories = await fetch('http://localhost:5500/orderHistories/' + loggedUsername, {
+        method: "GET",
+        headers: { "content-type": "application/json" },
+    }).then(response => response.json());
+    orderHistories.forEach(element => {
+        console.log(element.obj);
+        attachOrderHistory(tbody, element.obj);
+    })
+}
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
 function attachSalebooks(tbody, book) {
 
     // data addition to the row of the table one by one (for one book)
@@ -282,20 +369,9 @@ function attachbooks(tbody, book) {
             event.preventDefault();
             displayNewPurchase();
             const bookId = document.getElementById('moreBook-code').value;
-            const tbody = document.getElementById("book-list-body");
             const updatedQty = Number(document.getElementById("moreQty").value);
-            await fetch('http://localhost:5500/books/' + bookId)
-                .then(response => response.json())
-                .then(data => {
-                    document.getElementById('form-heading').textContent = `Purchased ${updatedQty} quantity of ${data.title}`;
-                    document.getElementById("code").value = data.id;
-                    document.getElementById("title").value = data.title;
-                    document.getElementById("qty").value = Number(data.qty) + updatedQty;
-                    document.getElementById("pub-date").value = data.publishedDate;
-                    document.getElementById("unitprice").value = data.price
-                    document.getElementById('submit-btn').dataset.id = data.id;
-                })
-            // displayCRUDList();
+            updateBookQty(book, updatedQty);
+            displayCRUDList();
         }
     });
 
@@ -329,7 +405,78 @@ function attachbooks(tbody, book) {
 
 }
 
+
 ////////////////////////////////////////////////////////////////////////////////////////////
+
+function attachShoppingCart(tbody, book) {
+
+    // data addition to the row of the table one by one (for one book)
+    const tr = document.createElement('tr');
+
+    const idData = document.createElement('td'); //<td>111</td>
+    idData.textContent = book.id;
+    tr.appendChild(idData); //
+
+    const titleData = document.createElement('td'); //<td>111</td>
+    titleData.textContent = book.title;
+    tr.appendChild(titleData); //
+
+    const qtyData = document.createElement('td'); //<td>111</td>
+    qtyData.textContent = book.qty;
+    tr.appendChild(qtyData);
+
+    // const pubData = document.createElement('td'); //<td>111</td>
+    // pubData.textContent = book.publishedDate;
+    // tr.appendChild(pubData);
+
+    const priceData = document.createElement('td'); //<td>111</td>
+    priceData.textContent = book.price;
+    tr.appendChild(priceData);
+
+
+    const totalData = document.createElement('td'); //<td>111</td>
+    totalData.textContent = Number(book.price) * Number(book.qty);
+    tr.appendChild(totalData);
+
+    tbody.appendChild(tr);
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+function attachOrderHistory(tbody, book) {
+
+    // data addition to the row of the table one by one (for one book)
+    const tr = document.createElement('tr');
+
+    const idData = document.createElement('td'); //<td>111</td>
+    idData.textContent = book.id;
+    tr.appendChild(idData); //
+
+    const titleData = document.createElement('td'); //<td>111</td>
+    titleData.textContent = book.title;
+    tr.appendChild(titleData); //
+
+    const qtyData = document.createElement('td'); //<td>111</td>
+    qtyData.textContent = book.qty;
+    tr.appendChild(qtyData);
+
+    const priceData = document.createElement('td'); //<td>111</td>
+    priceData.textContent = book.price;
+    tr.appendChild(priceData);
+
+
+    const totalData = document.createElement('td'); //<td>111</td>
+    totalData.textContent = Number(book.price) * Number(book.qty);
+    tr.appendChild(totalData);
+
+    tbody.appendChild(tr);
+
+}
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 
 async function updateBook(bookId) {
     await fetch('http://localhost:5500/books/' + bookId, {
@@ -349,6 +496,35 @@ async function updateBook(bookId) {
             document.getElementById('input-form').reset();
             document.getElementById('submit-btn').dataset.id = '';
             location.reload();
+            displayCRUDList();
+        })
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////
+
+async function updateBookQty(book, movedQty) {
+    const books = await fetch('http://localhost:5500/books')
+        .then(response => response.json())
+    const filteredBook = books.find(b => Number(b.id) === Number(book.id))
+
+    await fetch('http://localhost:5500/books/' + filteredBook.id, {
+        method: "PUT",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({
+            id: filteredBook.id,
+            title: filteredBook.title,
+            qty: Number(filteredBook.qty) + movedQty,
+            publishedDate: filteredBook.publishedDate,
+            price: filteredBook.price
+        })
+    }).then(response => response.json())
+        .then(book => {
+            console.log(book);
+            document.getElementById('form-heading').textContent = "Add a New Book";
+            document.getElementById('input-form').reset();
+            document.getElementById('submit-btn').dataset.id = '';
+            location.reload();
+            displaySalesList()
         })
 }
 
@@ -358,12 +534,31 @@ async function updateBook(bookId) {
 
 
 
+
 function displaySalesList() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('booklist').style.display = 'block';
+    document.getElementById('cartlist').style.display = 'none';
     document.getElementById('newBook').style.display = 'none';
     document.getElementById('moreBook').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('payment').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'block';
+    document.getElementById('show-order-btn').style.display = 'block';
+}
+
+
+
+function displayPaymentPage() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('booklist').style.display = 'none';
+    document.getElementById('newBook').style.display = 'none';
+    document.getElementById('moreBook').style.display = 'none';
+    document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('payment').style.display = 'block';
+    document.getElementById('cartlist').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'none';
+    document.getElementById('show-order-btn').style.display = 'none';
 }
 
 
@@ -375,6 +570,10 @@ function displayCRUDList() {
     document.getElementById('newBook').style.display = 'none';
     document.getElementById('moreBook').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'block';
+    document.getElementById('payment').style.display = 'none';
+    document.getElementById('cartlist').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'none';
+    document.getElementById('show-order-btn').style.display = 'none';
 }
 
 function displayNewPurchase() {
@@ -383,6 +582,10 @@ function displayNewPurchase() {
     document.getElementById('newBook').style.display = 'block';
     document.getElementById('moreBook').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('payment').style.display = 'none';
+    document.getElementById('cartlist').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'none';
+    document.getElementById('show-order-btn').style.display = 'none';
 }
 
 function displayMorePurchase() {
@@ -390,6 +593,10 @@ function displayMorePurchase() {
     document.getElementById('login').style.display = 'none';
     document.getElementById('moreBook').style.display = 'block';
     document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('payment').style.display = 'none';
+    document.getElementById('cartlist').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'none';
+    document.getElementById('show-order-btn').style.display = 'none';
 }
 
 
@@ -399,5 +606,22 @@ function displayLogin() {
     document.getElementById('booklist').style.display = 'none';
     document.getElementById('newBook').style.display = 'none';
     document.getElementById('moreBook').style.display = 'none';
+    document.getElementById('payment').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('cartlist').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'none';
+    document.getElementById('show-order-btn').style.display = 'none';
+}
+
+
+function displayCart() {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('booklist').style.display = 'none';
+    document.getElementById('newBook').style.display = 'none';
+    document.getElementById('moreBook').style.display = 'none';
+    document.getElementById('payment').style.display = 'none';
+    document.getElementById('add-a-Book').style.display = 'none';
+    document.getElementById('show-cart-btn').style.display = 'block';
+    document.getElementById('cartlist').style.display = 'block';
+    document.getElementById('show-order-btn').style.display = 'block';
 }

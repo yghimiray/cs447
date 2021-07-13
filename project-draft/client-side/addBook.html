@@ -26,7 +26,7 @@
                 <div class="collapse navbar-collapse" id="navbarCollapse">
                     <ul class="navbar-nav me-auto mb-2 mb-md-0">
                         <li class="nav-item">
-                            <a class="nav-link active" aria-current="page" id="homepage" href="./index.html">Home</a>
+                            <!-- <a class="nav-link active" aria-current="page" id="homepage" href="./index.html">Home</a> -->
                         </li>
 
                     </ul>
@@ -43,27 +43,59 @@
 
 
     <body>
+        
         <div>
-        <div id="booklist" class="container">
-<button class="btn btn-primary" type="submit" id="show-cart-btn">Show Cart</button>
-            <h1>Book List</h1>
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th scope="col">Code#</th>
-                        <th scope="col">Title</th>
-                        <th scope="col">QTY</th>
-                        <th scope="col">Published on</th>
-                        <th scope="col">Price</th>
-                        <th scope="col">Actions</th>
-                    </tr>
-                </thead>
-                <tbody id="book-list-body"></tbody>
-            </table>
-          
+            <!-- <input type=button onClick="location.href='./index.html'" value='click here' > -->
+            <button class="btn btn-primary" type="submit" id="show-cart-btn" >Show Cart</button>
+            <button class="btn btn-primary" type="submit" id="show-order-btn">Show Order History</button>
+            <div id="booklist" class="container">
+                <h1>Book List</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Code#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">QTY</th>
+                            <th scope="col">Published on</th>
+                            <th scope="col">Price</th>
+                            <th scope="col">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody id="book-list-body"></tbody>
+                </table>
+
+            </div>
+            <button type="button" class="btn btn-primary" id="add-a-Book" style="position:relative; left:80px">Purchase
+                New Book</button>
         </div>
-        <button type="button" class="btn btn-primary" id="add-a-Book" style="position:relative; left:80px">Purchase New Book</button>
-    </div>
+
+
+
+
+        <div>
+            <div id="cartlist" class="container">
+                <!-- <button class="btn btn-primary" type="submit" id="show-cart-btn">Show Cart</button> -->
+                <h1>Cart List</h1>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th scope="col">Code#</th>
+                            <th scope="col">Title</th>
+                            <th scope="col">QTY</th>
+                            <!-- <th scope="col">Published on</th> -->
+                            <th scope="col">Price</th>
+                            <th scope="col">Total Price</th>
+                            <!-- <th scope="col">Actions</th> -->
+                        </tr>
+                    </thead>
+                    <tbody id="cart-list-body"></tbody>
+                </table>
+
+            </div>
+
+        </div>
+
+
 
 
 
@@ -135,10 +167,10 @@
 
 
         <div id="login" class="container">
-            
+
             <h4 id="login-heading"></h4>
-         
-           <form id="login-form">
+
+            <form id="login-form">
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="username" class="form-label">Username</label>
                     <input type="text" size="70" id="username">
@@ -146,12 +178,32 @@
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="password" class="form-label">Password</label>
                     <input type="password" size="70" id="password">
-                    <button type="submit" class="btn btn-primary" id="login-btn" style="position:relative; left:50px">Login</button>
+                    <button type="submit" class="btn btn-primary" id="login-btn"
+                        style="position:relative; left:50px">Login</button>
                 </div>
             </form>
         </div>
 
 
+
+
+        <div id="payment" class="container">
+
+            <h4 id="payment-heading"></h4>
+
+            <form id="payment-form">
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="fullname" class="form-label">Name in card</label>
+                    <input type="text" size="70" id="fullname">
+                </div>
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="cardnumber" class="form-label">Card Number</label>
+                    <input type="number" size="70" id="cardnumber">
+                    <button type="submit" class="btn btn-primary" id="payment-btn"
+                        style="position:relative; left:50px">Pay</button>
+                </div>
+            </form>
+        </div>
 
 
 

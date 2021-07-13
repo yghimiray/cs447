@@ -3,12 +3,16 @@ let ShoppingCart = require('./shoppingCart');
 const OrderHistory = require('./orderHistory');
 
 class User {
-    constructor(name,username, password, role) {
+    constructor(name,username, password, role ) {
         this.name = name;
         this.username = username;
         this.password = password;
         this.role = role;
+        // this.shoppingCart = shoppingCart;
+
     }
+
+  
 
     login() {
         return users.find(u => { return u.username === this.username && u.password === this.password });
@@ -43,24 +47,36 @@ class User {
         }
     }
 
-    addShoppingCart(){
-        const shoppingCart = new ShoppingCart(this.username,null).addCarts();
+    addShoppingCart(book){
+        const shoppingCart = new ShoppingCart(this.username,book).addCarts();
+        // this.shoppingCart.push(book);
         return shoppingCart;
     }
 
     searchShoppingCart(){
-        const cart = new ShoppingCart(this.username,null).searchCart(this.username);
-        return cart;
+        const shoppingCart = new ShoppingCart(this.username,null).searchCart(this.username);
+        return shoppingCart;
+        
+        // const length = this.
+        // shoppingCart.length;
+        // if (length === 0) {
+        //     throw new Error("Your cart is empty.")
+        // } else {
+        //    return this.shoppingCart;
+        // }
     }
 
     emptyShoppingCart(){
-        const cart = new ShoppingCart(this.username,null).emptyCart(this.username);
-        return cart;
+        const shoppingCart = new ShoppingCart(this.username,null).emptyCart(this.username);
+        return shoppingCart;
+
+
+        // return this.shoppingCart = [];
     }
 
 
-    addOrderHistory(){
-        const orderHistory = new OrderHistory(this.username,null).addOrders();
+    addOrderHistory(book){
+        const orderHistory = new OrderHistory(this.username,book).addOrders();
         return orderHistory;
     }
 

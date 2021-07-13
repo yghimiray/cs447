@@ -35,9 +35,9 @@ exports.searchUser = (req,res,next)=>{
 };
 
 
-
 exports.addShoppingCart = (req,res,next)=>{
-    const cart = new User(req.body.name,req.body.username,req.body.password,"user").addShoppingCart();
+    // req.body //{username: , obj:book}
+    const cart = new User(null,req.body.username,null,"user").addShoppingCart(req.body.obj);
     res.status(200).json(cart);
 };
 
@@ -56,7 +56,7 @@ exports.emptyShoppingCart = (req,res,next)=>{
 
 
 exports.addOrderHistory = (req,res,next)=>{
-    const cart = new User(null,req.body.username,null,null).addOrderHistory();
+    const cart = new User(null,req.body.username,null,null).addOrderHistory(req.body.obj);
     res.status(200).json(cart);
 };
 

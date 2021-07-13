@@ -1,5 +1,4 @@
-let books = [{"id":1, "title":"Book A", "qty":300, "publishedDate":"07/07/2021", "price":25},
-            {"id":2, "title":"Book B", "qty":100, "publishedDate":"07/07/2021", "price":20}];
+let books = [];
 
 class Book {
     constructor(id, title, qty, publishedDate, price) {
