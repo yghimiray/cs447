@@ -10,7 +10,7 @@ class Book {
     }
 
     save() {
-        // this.id = Math.floor(Math.random()*100).toString();
+        this.id = Math.floor(Math.random()*1000000).toString();
         books.push(this);
         return this;
     }

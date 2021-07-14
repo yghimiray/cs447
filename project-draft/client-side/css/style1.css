@@ -1,0 +1,9 @@
+body {
+    text-align: left;
+    background-color: khaki;
+}
+
+#creat_new_account-form,
+#login-form {
+    text-align: left;
+}

@@ -13,7 +13,7 @@ class User {
     }
 
     static init(){
-        users.push(new User("john",'admin',12345,'admin'));
+        users.push(new User("Yogesh",'admin',12345,'admin'));
     }
   
 
@@ -94,8 +94,8 @@ class User {
 
 
 
-users.push(new User("john Smith",'john', 'admin123', 'admin'));
-users.push(new User("Edward Jack", 'edward', 'Edward567', 'member'));
+// users.push(new User("john Smith",'john', 'admin123', 'admin'));
+// users.push(new User("Edward Jack", 'edward', 'Edward567', 'member'));
 
 
 // const user = new User("john Smith",'Ashenafi', 'admin123', 'admin');

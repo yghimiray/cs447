@@ -2,16 +2,29 @@
 <html>
 
 <head>
-    <title>Gagcsy Book Store</title>
+    <title>Gagcsy Online Bookstore</title>
     <meta charset="utf-8">
     <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
     <link rel="stylesheet" type="text/css" href="css/style.css">
     <script type="text/javascript" src="./addBook.js"></script>
+
+    <style>
+        body {
+            background-image: url("images/book1.PNG");
+            background-repeat: no-repeat;
+            background-size: auto;
+            background-position: right;
+        }
+    </style>
+
 </head>
 
 
 
 <body>
+
+
+
     <div class="container">
 
         <div class="jumbotron ">
@@ -70,42 +83,23 @@
             </script>
 
         </div>
-        <div class="row">
+
+
+        <p style=" color:rgb(226, 34, 34); font-size:30px;  text-align: center;"><a href="./addBook.html" style=" color:rgb(226, 34, 34); font-size:30px;  text-align: center;">lets get started...</a></p>
+        <div style="text-align: center;">
+
+            <h2>书 </h2> <br>
+            <h2>पुस्तक </h2> <br>
+            <h2>መፅሐፍ </h2>
+
+        </div>
+
+        <div style=" text-align: center;" class="row">
 
             <div class="new col-lg-8">
-
-                <h3>Sign up</h3>
-                <form rol="form" class="form-horizontal" name="regs" id="creat_new_account-form">
-                    <label><input type="text" name="name" class="form" placeholder="Enter name" required>
-                        <p id="fname_err"></p>
-                    </label></br>
-
-                    <label><input type="text" name="username" class="form" placeholder="Enter username" required>
-                        <p id="name_err"></p>
-                    </label></br>
-
-
-                    <label><input type="password" name="pass" placeholder="Enter password" required>
-                        <p id="pass_err"></p>
-                    </label></br>
-                    <!-- <label><input type="password" name="c_pass" placeholder="confirm password" required>
-             <p id="password_err"></p></label></br> -->
-                    <label><input type="submit" name="" value="Sign up" id="c_btn" class="btn btn-success"></label>
-                </form>
             </div>
-
-
-
             <div class="Login col-lg-4">
-                <h3>Log in</h3>
-                <form>
-                    <label><input type="text" name="username" placeholder="Enter your username" required></label></br>
-                    <label><input type="password" name="pass" placeholder="enter your password" required></label></br>
-                    <label><input type="submit" name="" value="Log in" class="btn btn-success"></label>
-                </form>
-
             </div>
-
         </div>
 
         <div class="fotter row">
@@ -117,25 +111,23 @@
                     <li><a href="#">sign up</a></li>
                     <li><a href="#">Log in</a></li>
 
-
                 </ul>
 
             </div>
             <div class="how_it_works col-lg-4">
                 <p><i><u>how it works </u></i></br>
-                    Here in Gagcsy Book Store you can search best selling books or order newly comming books by creating
-                    account </p>
+                    Here in Gagcsy Book Store you can search best selling books or order newly comming books by creating account </p>
             </div>
 
             <div class="contact_us col-lg-4">
                 <p>
                     <u><i>contact us</i></u><br>
-                <form>
-                    <label><input type="email" name="" placeholder="enter your email" required=""></label></br>
-                    <label><textarea cols="30" rows="4" placeholder="write your  message"
+                    <form>
+                        <label><input type="email" name="" placeholder="enter your email" required=""></label></br>
+                        <label><textarea cols="30" rows="4" placeholder="write your  message"
                             required=""></textarea></label><br>
-                    <label><input type="submit" name="" value="Send" class="btn btn-info"></label>
-                </form>
+                        <label><input type="submit" name="" value="Send" class="btn btn-info"></label>
+                    </form>
                 </p>
 
             </div>

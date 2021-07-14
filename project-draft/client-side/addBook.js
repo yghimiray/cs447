@@ -1,10 +1,11 @@
-// let admin = true;
-let admin = false;
 let loggedUsername;
+
 
 window.onload = function () {
 
     displayLogin();
+
+
 
     document.getElementById('login-btn').onclick = async function (event) {
         event.preventDefault();
@@ -30,7 +31,22 @@ window.onload = function () {
 
         loggedUsername = document.getElementById('username').value,
             fetchBooks();
-        if (admin) {
+        if (isAdmin()) {
+            displayCRUDList();
+        } else {
+            displaySalesList();
+        }
+    }
+
+
+
+
+
+
+
+    document.getElementById('go-list-btn').onclick = function (event) {
+        event.preventDefault();
+        if (isAdmin()) {
             displayCRUDList();
         } else {
             displaySalesList();
@@ -40,29 +56,13 @@ window.onload = function () {
 
     document.getElementById('c_btn').onclick = async function (event) {
         event.preventDefault();
-        let result = await fetch('http://localhost:5500/users', {
-            method: 'POST',
-            headers: {
-                'content-type': 'application/json'
-            },
-            body: JSON.stringify({
-                name: document.getElementById('c_name').value,
-                username: document.getElementById('c_username').value,
-                password: document.getElementById('c_password').value,
-                role: "user"
-            })
-        }).then(response => response.json())
-            .then(user => {
-                console.log(user);
-                alert("User Created Successfully. Please Login now.")
-                document.getElementById('creat_new_account-form').reset();
-            }).catch(err => {
-                alert("User already esists.")
-                document.getElementById('creat_new_account-form').reset();
-            })
-
-        displayLogin()
-
+        const uname = loggedUsername;
+        if (uname) {
+            updateUser(uname);
+        } else {
+            addUsers();
+        }
+        location.reload()
     }
 
 
@@ -98,7 +98,31 @@ window.onload = function () {
         }
         displayNewPurchase();
     }
+
+
+    ////////////////////////////////////////////////////////////////////////////////////////
+    document.getElementById("update-user-btn").onclick = async function (event) {
+        event.preventDefault();
+        displayLogin()
+        await fetch('http://localhost:5500/users/' + loggedUsername)
+            .then(response => response.json())
+            .then(user => {
+                document.getElementById('not-registered').textContent = "Updating the user details";
+                document.getElementById("c_name").value = user.name;
+                document.getElementById("c_username").value = user.username;
+                document.getElementById("c_password").value = user.password;
+            })
+        // updateUser(loggedUsername);
+
+    }
+
+
+
+
+
 }
+
+
 
 
 ////////////////////////////////////////////////////////////////////////////////////////////
@@ -107,7 +131,7 @@ async function fetchBooks() {
     const books = await fetch('http://localhost:5500/books')
         .then(response => response.json())
     books.forEach(book => {
-        if (admin) {
+        if (isAdmin()) {
             attachbooks(tbody, book)
         } else {
             attachSalebooks(tbody, book);
@@ -126,7 +150,6 @@ async function addBooks() {
         method: "POST",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
-            id: document.getElementById("code").value,
             title: document.getElementById("title").value,
             qty: document.getElementById("qty").value,
             publishedDate: document.getElementById("pub-date").value,
@@ -144,6 +167,37 @@ async function addBooks() {
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
+async function addUsers() {
+    let result = await fetch('http://localhost:5500/users', {
+        method: 'POST',
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            name: document.getElementById('c_name').value,
+            username: document.getElementById('c_username').value,
+            password: document.getElementById('c_password').value,
+            role: "user"
+        })
+    }).then(response => response.json())
+        .then(user => {
+            console.log(user);
+            alert("User Created Successfully. Please Login now.")
+            document.getElementById('creat_new_account-form').reset();
+        }).catch(err => {
+            alert("User already esists.")
+            document.getElementById('creat_new_account-form').reset();
+        })
+}
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 async function addShoppingCart(book) {
     const shoppingCarts = await fetch('http://localhost:5500/shoppingCarts', {
         method: "POST",
@@ -204,10 +258,6 @@ async function showShoppingCart() {
                 updateBookQty(cartBook, soldQty);
                 addOrderHistory(cartBook);
             })
-            await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
-                method: "DELETE",
-                headers: { "content-type": "application/json" },
-            }).then(response => response.json());
 
         }
     });
@@ -216,8 +266,18 @@ async function showShoppingCart() {
 
 
 
-
 ////////////////////////////////////////////////////////////////////////////////////////////////////////
+async function emptyCart() {
+    await fetch('http://localhost:5500/shoppingCarts/' + loggedUsername, {
+        method: "DELETE",
+        headers: { "content-type": "application/json" },
+    }).then(response => response.json());
+}
+
+//////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
 async function addOrderHistory(book) {
     const shoppingCarts = await fetch('http://localhost:5500/orderHistories', {
         method: "POST",
@@ -305,7 +365,11 @@ function attachSalebooks(tbody, book) {
             });
         document.getElementById("moreBook-btn").onclick = async function (event) {
             event.preventDefault();
-            // displayNewPurchase();
+            if (isAdmin()) {
+                displayCRUDList();
+            } else {
+                displaySalesList();
+            }
             const bookId = document.getElementById('moreBook-code').value;
             const orderedQty = Number(document.getElementById("moreQty").value);
             await fetch('http://localhost:5500/books/' + bookId)
@@ -318,15 +382,6 @@ function attachSalebooks(tbody, book) {
                         const addedBook = JSON.parse(JSON.stringify(book));
                         addedBook.qty = orderedQty;
                         addShoppingCart(addedBook);
-
-
-                        // document.getElementById("code").value = book.id;
-                        // document.getElementById("title").value = book.title;
-                        // document.getElementById("qty").value = Number(book.qty)-orderedQty;
-                        // document.getElementById("pub-date").value = book.publishedDate;
-                        // document.getElementById("unitprice").value = book.price
-                        // document.getElementById('submit-btn').dataset.id = book.id;
-
                     }
                 })
             // displayCRUDList();
@@ -426,7 +481,6 @@ function attachbooks(tbody, book) {
             .then(data => {
                 console.log(data);
                 document.getElementById('form-heading').textContent = "Edit a Book";
-                document.getElementById("code").value = data.id;
                 document.getElementById("title").value = data.title;
                 document.getElementById("qty").value = data.qty;
                 document.getElementById("pub-date").value = data.publishedDate;
@@ -525,28 +579,29 @@ async function updateBook(bookId) {
             document.getElementById('form-heading').textContent = "Add a New Book";
             document.getElementById('input-form').reset();
             document.getElementById('submit-btn').dataset.id = '';
-            location.reload();
+            // location.reload();
             displayCRUDList();
         })
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////
 async function updateUser(uname) {
+
     await fetch('http://localhost:5500/users/' + uname, {
         method: "PUT",
         headers: { "content-type": "application/json" },
         body: JSON.stringify({
             name: document.getElementById('c_name').value,
-            username:uname,
+            username: uname,
             password: document.getElementById('c_password').value,
-            role:"user"
+            role: "user"
         })
     }).then(response => response.json())
         .then(user => {
-            console.log(user);
+            alert(`User updated Name:${user.name} Username:${user.username}`);
             document.getElementById('creat_new_account-form').reset();
             document.getElementById('c_btn').dataset.username = '';
-            location.reload();
+            // location.reload();
         })
 }
 
@@ -573,7 +628,7 @@ async function updateBookQty(book, movedQty) {
             document.getElementById('form-heading').textContent = "Add a New Book";
             document.getElementById('input-form').reset();
             document.getElementById('submit-btn').dataset.id = '';
-            location.reload();
+            // location.reload();
             displaySalesList()
         })
 }
@@ -593,8 +648,8 @@ function displaySalesList() {
     document.getElementById('moreBook').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
     document.getElementById('payment').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'block';
-    document.getElementById('show-order-btn').style.display = 'block';
+    document.getElementById('user-action').style.display = 'block';
+    // document.getElementById('show-order-btn').style.display = 'block';
 }
 
 
@@ -607,8 +662,8 @@ function displayPaymentPage() {
     document.getElementById('add-a-Book').style.display = 'none';
     document.getElementById('payment').style.display = 'block';
     document.getElementById('cartlist').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'none';
-    document.getElementById('show-order-btn').style.display = 'none';
+    document.getElementById('user-action').style.display = 'none';
+    // document.getElementById('show-order-btn').style.display = 'none';
 }
 
 
@@ -622,8 +677,8 @@ function displayCRUDList() {
     document.getElementById('add-a-Book').style.display = 'block';
     document.getElementById('payment').style.display = 'none';
     document.getElementById('cartlist').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'none';
-    document.getElementById('show-order-btn').style.display = 'none';
+    document.getElementById('user-action').style.display = 'none';
+    // document.getElementById('show-order-btn').style.display = 'none';
 }
 
 function displayNewPurchase() {
@@ -634,8 +689,8 @@ function displayNewPurchase() {
     document.getElementById('add-a-Book').style.display = 'none';
     document.getElementById('payment').style.display = 'none';
     document.getElementById('cartlist').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'none';
-    document.getElementById('show-order-btn').style.display = 'none';
+    document.getElementById('user-action').style.display = 'none';
+    // document.getElementById('show-order-btn').style.display = 'none';
 }
 
 function displayMorePurchase() {
@@ -645,8 +700,8 @@ function displayMorePurchase() {
     document.getElementById('add-a-Book').style.display = 'none';
     document.getElementById('payment').style.display = 'none';
     document.getElementById('cartlist').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'none';
-    document.getElementById('show-order-btn').style.display = 'none';
+    document.getElementById('user-action').style.display = 'none';
+    // document.getElementById('show-order-btn').style.display = 'none';
 }
 
 
@@ -659,8 +714,8 @@ function displayLogin() {
     document.getElementById('payment').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
     document.getElementById('cartlist').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'none';
-    document.getElementById('show-order-btn').style.display = 'none';
+    document.getElementById('user-action').style.display = 'none';
+    // document.getElementById('show-order-btn').style.display = 'none';
 }
 
 
@@ -671,7 +726,16 @@ function displayCart() {
     document.getElementById('moreBook').style.display = 'none';
     document.getElementById('payment').style.display = 'none';
     document.getElementById('add-a-Book').style.display = 'none';
-    document.getElementById('show-cart-btn').style.display = 'block';
+    document.getElementById('user-action').style.display = 'block';
     document.getElementById('cartlist').style.display = 'block';
-    document.getElementById('show-order-btn').style.display = 'block';
+    // document.getElementById('show-order-btn').style.display = 'block';
+}
+
+
+function isAdmin(){
+    if (loggedUsername === "admin") {
+        return true;
+    } else {
+        return false;
+    }
 }

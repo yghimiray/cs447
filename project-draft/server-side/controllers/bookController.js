@@ -11,7 +11,7 @@ exports.searchById = (req,res,next)=>{
 
 exports.save = (req,res,next)=>{
     const book = req.body;
-    const savedBook = new Book(book.id,book.title,book.qty,book.publishedDate,book.price).save();
+    const savedBook = new Book(null,book.title,book.qty,book.publishedDate,book.price).save();
     res.status(201).json(savedBook);
 };
 

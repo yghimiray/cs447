@@ -9,8 +9,18 @@
 
     <link href="./bootstrap.min.css" rel="stylesheet">
     <link href="carousel.css" rel="stylesheet">
+    <link href="./css/style1.css" rel="stylesheet">
     <!-- <script src="./resources/bootstrap.bundle.min.js"></script> -->
     <script src="./addBook.js"></script>
+
+    <style>
+        body {
+            background-image: url("images/book.jpg");
+            background-repeat: repeat-y;
+            background-size: auto;
+            background-position: right;
+        }
+    </style>
 </head>
 
 <body>
@@ -18,6 +28,9 @@
     <header>
         <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
             <div class="container-fluid">
+                <marquee>
+                    <a class="navbar-brand" href="#" style="font-size:48px" ;>Gagcsy Online Bookstore 书 पुस्तक መፅሐፍ </a>
+                </marquee>
                 <a class="navbar-brand" href="#">Online Bookstore</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse"
                     aria-controls="navbarCollapse" aria-expanded="false" aria-label="Toggle navigation">
@@ -40,14 +53,25 @@
     </header>
 
 
-
+    <p style=" color:white; font-size:30px; text-align:left ; "><a href="./index.html ">Home Page</a></p>
 
     <body>
-        
+
+        <div id ="user-action" class="container">
+            <form >
+            <button class="btn btn-primary" type="submit" id="show-cart-btn">Show Cart</button>
+            <button class="btn btn-primary" type="submit" id="show-order-btn">Show Order History</button>
+            <button class="btn btn-primary" type="submit" id="update-user-btn">Update User</button>
+
+        </form>
+        </div>
+
+
+
+
+
         <div>
-            <!-- <input type=button onClick="location.href='./index.html'" value='click here' > -->
-            <p><button class="btn btn-primary" type="submit" id="show-cart-btn" >Show Cart</button><button class="btn btn-primary" type="submit" id="show-order-btn">Show Order History</button></p>
-                <div id="booklist" class="container">
+            <div id="booklist" class="container">
                 <h1>Book List</h1>
                 <table class="table">
                     <thead>
@@ -61,7 +85,7 @@
                         </tr>
                     </thead>
                     <tbody id="book-list-body"></tbody>
-                </table>     
+                </table>
 
             </div>
             <button type="button" class="btn btn-primary" id="add-a-Book" style="position:relative; left:80px">Purchase
@@ -103,16 +127,12 @@
 
         <div id="newBook" class="container">
             <p>
-                <a class="fcc-btn" aria-current="page" id="back-page" target="_self" href="./addBook.html">Back</a>
+                <!-- <a class="fcc-btn" aria-current="page" id="back-page" target="_self" href="./addBook.html">Back</a> -->
             </p>
 
             <h2 id="form-heading">Add a new Book</h2>
             <form id="input-form">
-                <div class="mb-3" style="position:relative; left:80px">
-                    <label for="code" class="form-label">Code#</label>
-                    <input type="number" size="70" id="code">
-                </div>
-
+             
                 <div style="position:relative; left:80px" class="mb-3">
                     <label for="title" class="form-label">Title</label>
                     <input type="text" id="title" size="70" aria-describedby="book-title">
@@ -137,6 +157,8 @@
                 </div>
                 <button type="submit" class="btn btn-primary" id="submit-btn"
                     style="position:relative; left:80px">Submit</button>
+                    <button type="submit" class="btn btn-primary" id="go-list-btn"
+                    style="position:relative; left:80px">Back</button>
             </form>
         </div>
 
@@ -145,7 +167,7 @@
 
         <div id="moreBook" class="container">
             <p>
-                <a class="fcc-btn" aria-current="page" id="back-page" target="_self" href="./addBook.html">Back</a>
+                <!-- <a class="fcc-btn" aria-current="page" id="back-page" target="_self" href="./addBook.html">Back</a> -->
             </p>
             <h4 id="moreBook-heading"></h4>
             <form id="moreBook-form">
@@ -156,7 +178,8 @@
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="moreQty" class="form-label">Order Quantity:</label>
                     <input type="number" size="70" id="moreQty">
-                    <button type="submit" class="btn btn-primary" id="moreBook-btn" style="position:relative; left:50px">OK</button>
+                    <button type="submit" class="btn btn-primary" id="moreBook-btn"
+                        style="position:relative; left:50px">OK</button>
                 </div>
             </form>
         </div>
@@ -165,22 +188,48 @@
 
 
         <div id="login" class="container">
-
             <h4 id="login-heading"></h4>
-
             <form id="login-form">
+                <label class="form-label" style="position:relative; left:500px">Are you already registered ?</label>
+                <div class="mb-3" style="position:relative; left:500px">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" size="17" id="username" placeholder="Enter your username">
+                </div>
+                <div class="mb-3" style="position:relative; left:500px">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" size="17" id="password" placeholder="Enter your password">
+                    <button type="submit" class="btn btn-primary" id="login-btn"
+                        style="position:relative; left:50px">Sign In</button>
+                </div>
+            </form>
+
+            <label class="form-label" id="not-registered">Not registered yet? Please sign-up here</label>
+            <form id="creat_new_account-form">
+                <div class="mb-3" style="position:relative; left:3px">
+                    <label for="c_name" class="form-label">Full Name</label>
+                    <input type="text" size="17" id="c_name">
+                </div>
+
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="username" class="form-label">Username</label>
-                    <input type="text" size="70" id="username">
+                    <input type="text" size="17" id="c_username">
                 </div>
+
                 <div class="mb-3" style="position:relative; left:3px">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" size="70" id="password">
-                    <button type="submit" class="btn btn-primary" id="login-btn"
-                        style="position:relative; left:50px">Login</button>
+                    <input type="password" size="17" id="c_password">
+                    <button type="submit" class="btn btn-primary" id="c_btn" style="position:relative; left:50px">Sign
+                        Up</button>
                 </div>
             </form>
         </div>
+
+
+
+
+        </div>
+        </div>
+
 
 
 
@@ -206,35 +255,22 @@
 
 
 
-        <div id="creat_new_account" class="container_c">
-            <h4 id="login-heading"> create new account</h4>
-            <div id="login-form">
-                <form id="creat_new_account-form">
-                <div class="mb-3" style="position:relative; left:3px">
-                    <label for="c_name" class="form-label">Name</label>
-                    <input type="text" size="70" id="c_name">
-                </div>
-                
-                <div class="mb-3" style="position:relative; left:3px">
-                    <label for="username" class="form-label">Username</label>
-                    <input type="text" size="70" id="c_username">
-                </div>
-
-                <div class="mb-3" style="position:relative; left:3px">
-                    <label for="password" class="form-label">Password</label>
-                    <input type="password" size="70" id="c_password">
-                    <button type="submit" class="btn btn-primary" id="c_btn" style="position:relative; left:50px">Create account</button>
-                </div>
-            </form>
-            </div>
-        </div>
-
-
-
-
 
 
 
     </body>
+
+    <footer>
+
+        <marquee direction="up" behavior="scroll">
+            <strong>This is Online-Book-Store Project for the course CS477 with <br>Professor Tina Xing at <br>Maharishi
+                International University by <br>TEAM C <br>Team Leader & admin Yogesh, <br>memebers: Ashenafi, Connor,
+                Selam, Ghana &
+                Gerrard )</strong> <br>&copy GagcsyTina.com 2021 at MIU.
+        </marquee>
+
+
+    </footer>
+
 
 </html>
