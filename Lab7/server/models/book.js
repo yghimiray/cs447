@@ -21,7 +21,8 @@ module.exports = class Book {
     }
 
     update() {
-        return getDb().collection('books').updateOne({ _id: new ObjectID(this._id) }, { $set: { title: this.title, isbn: this.isbn, publishedDate: this.publishedDate, author: this.author } });
+        return getDb().collection('books').updateOne({ _id: new ObjectID(this._id) }, 
+        { $set: { title: this.title, isbn: this.isbn, publishedDate: this.publishedDate, author: this.author } });
     }
 
     static fetchAll() {

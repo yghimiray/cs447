@@ -1,0 +1,12 @@
+#moreBook {
+    display: none;
+}
+
+.container_book,
+.container-cart {
+    display: none;
+}
+
+body {
+    background-color: khaki;
+}

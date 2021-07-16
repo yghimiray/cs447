@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Gagcsy Book Store</title>
+    <meta charset="utf-8">
+    <link rel="stylesheet" type="text/css" href="bootstrap/css/bootstrap.css">
+    <link rel="stylesheet" type="text/css" href="css/style.css">
+    <script type="text/javascript" src="js/main.js"></script>
+</head>
+
+
+
+<body>
+    <div class="container">
+
+        <div class="jumbotron ">
+            <div class="row">
+                <div class="col-lg-5">
+                    <h1>Gagcsy Book Store With Pr. Tina</h1>
+                </div>
+
+
+                <div class="col-lg-7">
+                    <select class="select">
+            <option value="Fiction">Fiction</option>
+            <option value="Fiction">Scienctific</option>
+            <option value="Fiction">Acdamic</option>
+            <option value="Fiction">Religious</option>
+            <option value="Fiction">poltical</option>
+            <option value="Fiction">History</option>
+            <option value="Fiction">Technology</option>
+        </select>
+                    <input type="search" id="search" placeholder="search book ">
+                    <button type="button" class="btn btn-info s_btn">
+              <span class="glyphicon glyphicon-search  "></span> Search
+                 </button>
+                </div>
+            </div>
+
+            <div class="menu">
+                <ul class="nav nav-bar ">
+                    <li><a href="#">Home</a></li>
+                    <li><a href="catalog.html">catalog</a></li>
+                    <li><a href="catalog.html/#best">Best selling</a></li>
+                    <li><a href="#">sign up</a></li>
+                    <li><a href="#">Log in</a></li>
+                    <li><a href="#">Cart(0)</a></li>
+                </ul>
+
+            </div>
+        </div>
+        <div class="slid">
+            <img src="images/b4.jpg" alt="image" id="im">
+
+
+            <script>
+                let image = document.getElementById("im");
+                let data = ["images/b1.jpg", "images/b2.jpg", "images/b3.jpg", "images/b4.jpg"];
+                let index = 0;
+
+                function changer() {
+                    image.setAttribute("src", data[index]);
+                    index++;
+                    if (index >= data.length) {
+                        index = 0;
+                    }
+                };
+                setInterval(changer, 2000);
+            </script>
+
+        </div>
+        <div class="row">
+
+            <div class="new col-lg-8">
+
+                <h3>sign up</h3>
+                <form rol="form" class="form-horizontal" name="regs">
+                    <label><input type="text"  name ="firstname" class="form" placeholder="Enter firstname" required>
+             <p id="fname_err"></p></label></br>
+
+                    <label><input type="text"  name ="lastname" class="form" placeholder="Enter lastname" required>
+                <p id="lname_err"></p></label></br>
+
+                    <label><input type="text"  name ="username" class="form" placeholder="Enter username" required>
+                    <p id="name_err"></p></label></br>
+
+
+                    <label><input type="password" name="pass" placeholder="enter your password" required>
+                 </label></br>
+                    <!-- <label><input type="password" name="c_pass" placeholder="confirm password" required>
+             <p id="password_err"></p></label></br> -->
+                    <label><input type="submit" name="" value="sign up" class="btn btn-success" onclick="vlidate()"></label>
+
+                </form>
+            </div>
+
+
+
+            <div class="Login col-lg-4">
+                <h3>Log in</h3>
+                <form>
+                    <label><input type="text" name="username" placeholder="enter username" required></label></br>
+                    <label><input type="password" name="pass" placeholder="enter your password" required></label></br>
+                    <label><input type="submit" name="" value="Log in" class="btn btn-success"></label>
+                </form>
+
+            </div>
+
+        </div>
+
+        <div class="fotter row">
+            <div class="f_menu col-lg-4">
+                <ul>
+                    <li><a href="#">Home</a></li>
+                    <li><a href="catalog.html">catagories</a></li>
+                    <li><a href="#">order book</a></li>
+                    <li><a href="#">sign up</a></li>
+                    <li><a href="#">Log in</a></li>
+
+
+                </ul>
+
+            </div>
+            <div class="how_it_works col-lg-4">
+                <p><i><u>how it works </u></i></br>
+                    Here in Gagcsy Book Store you can search best selling books or order newly comming books by creating account </p>
+            </div>
+
+            <div class="contact_us col-lg-4">
+                <p>
+                    <u><i>contact us</i></u><br>
+                    <form>
+                        <label><input type="email" name="" placeholder="enter your email" required=""></label></br>
+                        <label><textarea cols="30" rows="4" placeholder="write your  message" required=""></textarea></label><br>
+                        <label><input type="submit" name="" value="Send" class="btn btn-info"></label>
+                    </form>
+                </p>
+
+            </div>
+
+        </div>
+        &copy GagcsyTina.com 2021 at MIU.
+    </div>
+    <marquee>
+        <strong>This is Online-Book-Store Project for the course CS477 with Professor Tina Xing at Maharishi International University by TEAM C (Team Leader & admin Yogesh,   memebers: Ashenafi, Selam, Connor, Ghana & Gerrard )</strong> 
+    </marquee>
+</body>
+
+
+</html>

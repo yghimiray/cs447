@@ -1,4 +1,4 @@
-let users = [{name:"Admin-Guy",username:"admin", password:"12345", role:"admin"}];
+let users = [];
 let ShoppingCart = require('./shoppingCart');
 const OrderHistory = require('./orderHistory');
 
@@ -8,7 +8,6 @@ class User {
         this.username = username;
         this.password = password;
         this.role = role;
-        // this.shoppingCart = shoppingCart;
 
     }
 
